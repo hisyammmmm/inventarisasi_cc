@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventaris Barang UPN Veteran Yogyakarta - Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 15px;
+      overflow-x: hidden;
+    }
+
+    .header {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px 30px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      max-width: 100%;
+    }
+
+    .header h1 {
+      color: white;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(45deg, #ff6b6b, #feca57);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .logout-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .add-form {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      padding: 25px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .form-group label {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .form-input:focus {
+      outline: none;
+      background: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .add-btn {
+      background: linear-gradient(45deg, #48c6ef, #6f86d6);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      grid-column: 1 / -1;
+      justify-self: center;
+      box-shadow: 0 8px 25px rgba(72, 198, 239, 0.4);
+      max-width: 300px;
+      width: 100%;
+    }
+
+    .add-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(72, 198, 239, 0.6);
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+
+    th {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 18px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
+      vertical-align: middle;
+    }
+
+    tr:hover {
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    }
+
+    .delete-btn, .edit-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .delete-btn:hover, .edit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    }
+
+    .edit-btn {
+      background: linear-gradient(45deg, #48c6ef, #6f86d6);
+    }
+
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 50px;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .empty-state img {
+      width: 100px;
+      opacity: 0.5;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 1200px) {
+      .add-form {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px 20px;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .add-form {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 12px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      .table-container {
+        margin: 15px -20px 0 -20px;
+        border-radius: 0;
+      }
+
+      table {
+        min-width: 800px;
+      }
+
+      th, td {
+        padding: 12px 8px;
+        font-size: 0.85rem;
+      }
+
+      .delete-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .add-form {
+        padding: 15px;
+      }
+
+      .form-input {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+
+      .add-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+      }
+
+      th, td {
+        padding: 10px 6px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📦 Inventaris Barang UPN Veteran Yogyakarta</h1>
+    <div class="user-info">
+      <div class="user-avatar">U</div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="add-form">
+      <div class="form-group">
+        <label for="kode_barang">Kode Barang</label>
+        <input type="text" id="kode_barang" class="form-input" placeholder="Masukkan kode barang" required>
+      </div>
+      <div class="form-group">
+        <label for="nama_barang">Nama Barang</label>
+        <input type="text" id="nama_barang" class="form-input" placeholder="Masukkan nama barang" required>
+      </div>
+      <div class="form-group">
+        <label for="kategori">Kategori</label>
+        <input type="text" id="kategori" class="form-input" placeholder="Masukkan kategori" required>
+      </div>
+      <div class="form-group">
+        <label for="jumlah">Jumlah</label>
+        <input type="number" id="jumlah" class="form-input" placeholder="0" required>
+      </div>
+      <div class="form-group">
+        <label for="satuan">Satuan</label>
+        <input type="text" id="satuan" class="form-input" placeholder="pcs, kg, liter, dll" required>
+      </div>
+      <div class="form-group">
+        <label for="kondisi">Kondisi</label>
+        <select id="kondisi" class="form-input" required>
+          <option value="">Pilih kondisi</option>
+          <option value="baik">Baik</option>
+          <option value="rusak_ringan">Rusak Ringan</option>
+          <option value="rusak_berat">Rusak Berat</option>
+          <option value="hilang">Hilang</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="lokasi">Lokasi</label>
+        <input type="text" id="lokasi" class="form-input" placeholder="Masukkan lokasi" required>
+      </div>
+      <div class="form-group">
+        <label for="keterangan">Keterangan</label>
+        <input type="text" id="keterangan" class="form-input" placeholder="Keterangan tambahan">
+      </div>
+      <button class="add-btn" onclick="addBarang()">➕ Tambah Barang</button>
+    </div>
+
+    <div class="table-container">
+      <table id="barangTable">
+        <thead>
+          <tr>
+            <th>Kode Barang</th>
+            <th>Nama Barang</th>
+            <th>Kategori</th>
+            <th>Jumlah</th>
+            <th>Satuan</th>
+            <th>Kondisi</th>
+            <th>Lokasi</th>
+            <th>Keterangan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="9" class="loading">
+              <div class="spinner"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="notification" class="notification"></div>
+
+  <script>
+    if (!localStorage.getItem('token')) {
+      window.location.href = 'login.html';
+    }
+
+    window.onload = function() {
+      getBarang();
+    };
+
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add('show');
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    // Menampilkan data barang
+async function getBarang() {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    showNotification('Anda harus login terlebih dahulu!', 'error');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:5000/', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      displayBarang(data);
+    } else {
+      showNotification('Gagal memuat data barang', 'error');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showNotification('Terjadi kesalahan saat memuat data', 'error');
+  }
+}
+
+// Menampilkan data barang dalam tabel
+function displayBarang(data) {
+  const tbody = document.getElementById('barangTable').getElementsByTagName('tbody')[0];
+  
+  if (data.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" class="empty-state">
+          <div>📦</div>
+          <h3>Belum ada data barang</h3>
+          <p>Tambahkan barang pertama Anda menggunakan form di atas</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = '';
+  data.forEach(barang => {
+    const row = tbody.insertRow();
+    row.innerHTML = `
+      <td><strong>${barang.kode_barang}</strong></td>
+      <td>${barang.nama_barang}</td>
+      <td>${barang.kategori}</td>
+      <td><strong>${barang.jumlah}</strong></td>
+      <td>${barang.satuan}</td>
+      <td><span class="status-badge status-${barang.kondisi}">${getKondisiText(barang.kondisi)}</span></td>
+      <td>📍 ${barang.lokasi}</td>
+      <td>${barang.keterangan || '-'}</td>
+      <td>
+        <button class="delete-btn" onclick="deleteBarang(${barang.id})">🗑️ Hapus</button>
+        <button class="edit-btn" onclick="editBarang(${barang.id})">✏️ Edit</button>
+      </td>
+    `;
+  });
+}
+
+// Fungsi untuk mendapatkan data barang berdasarkan ID untuk diedit
+async function editBarang(id) {
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await fetch(`http://localhost:5000/${id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    const barang = await response.json();
+
+    if (response.ok) {
+      // Isi form dengan data barang yang akan diedit
+      document.getElementById('kode_barang').value = barang.kode_barang;
+      document.getElementById('nama_barang').value = barang.nama_barang;
+      document.getElementById('kategori').value = barang.kategori;
+      document.getElementById('jumlah').value = barang.jumlah;
+      document.getElementById('satuan').value = barang.satuan;
+      document.getElementById('kondisi').value = barang.kondisi;
+      document.getElementById('lokasi').value = barang.lokasi;
+      document.getElementById('keterangan').value = barang.keterangan;
+
+      // Ganti label tombol tambah dengan edit
+      document.querySelector('.add-btn').textContent = "✏️ Edit Barang";
+
+      // Fungsi untuk memperbarui barang setelah form di-submit
+      document.querySelector('.add-btn').onclick = function() {
+        updateBarang(id);
+      };
+    } else {
+      showNotification('Barang tidak ditemukan', 'error');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showNotification('Terjadi kesalahan saat mengambil data barang', 'error');
+  }
+}
+
+// Fungsi untuk memperbarui barang
+async function updateBarang(id) {
+  const token = localStorage.getItem('token');
+  
+  const kode_barang = document.getElementById('kode_barang').value.trim();
+  const nama_barang = document.getElementById('nama_barang').value.trim();
+  const kategori = document.getElementById('kategori').value.trim();
+  const jumlah = document.getElementById('jumlah').value;
+  const satuan = document.getElementById('satuan').value.trim();
+  const kondisi = document.getElementById('kondisi').value;
+  const lokasi = document.getElementById('lokasi').value.trim();
+  const keterangan = document.getElementById('keterangan').value.trim();
+
+  // Validasi form
+  if (!kode_barang || !nama_barang || !kategori || !jumlah || !satuan || !kondisi || !lokasi) {
+    showNotification('Semua field wajib diisi!', 'error');
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        kode_barang,
+        nama_barang,
+        kategori,
+        jumlah: parseInt(jumlah),
+        satuan,
+        kondisi,
+        lokasi,
+        keterangan,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      showNotification('✅ Barang berhasil diperbarui!', 'success');
+      clearForm();
+      getBarang();
+      document.querySelector('.add-btn').textContent = "➕ Tambah Barang"; // Kembalikan ke tombol tambah
+    } else {
+      showNotification(`❌ ${data.message}`, 'error');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showNotification('Terjadi kesalahan saat memperbarui barang', 'error');
+  }
+}
+
+// Fungsi untuk menghapus barang
+async function deleteBarang(id) {
+  if (!confirm('Apakah Anda yakin ingin menghapus barang ini?')) {
+    return;
+  }
+
+  const token = localStorage.getItem('token');
+
+  try {
+    const response = await fetch(`http://localhost:5000/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      showNotification('🗑️ Barang berhasil dihapus!', 'success');
+      getBarang();
+    } else {
+      showNotification(`❌ ${data.message}`, 'error');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showNotification('Terjadi kesalahan saat menghapus barang', 'error');
+  }
+}
+
+// Fungsi untuk membersihkan form
+function clearForm() {
+  document.getElementById('kode_barang').value = '';
+  document.getElementById('nama_barang').value = '';
+  document.getElementById('kategori').value = '';
+  document.getElementById('jumlah').value = '';
+  document.getElementById('satuan').value = '';
+  document.getElementById('kondisi').value = '';
+  document.getElementById('lokasi').value = '';
+  document.getElementById('keterangan').value = '';
+}
+
+// Menampilkan notifikasi
+function showNotification(message, type = 'success') {
+  const notification = document.getElementById('notification');
+  notification.textContent = message;
+  notification.className = `notification ${type}`;
+  notification.classList.add('show');
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 3000);
+}
+
+
+    function displayBarang(data) {
+      const tbody = document.getElementById('barangTable').getElementsByTagName('tbody')[0];
+      
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" class="empty-state">
+              <div>📦</div>
+              <h3>Belum ada data barang</h3>
+              <p>Tambahkan barang pertama Anda menggunakan form di atas</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      data.forEach(barang => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td><strong>${barang.kode_barang}</strong></td>
+          <td>${barang.nama_barang}</td>
+          <td>${barang.kategori}</td>
+          <td><strong>${barang.jumlah}</strong></td>
+          <td>${barang.satuan}</td>
+          <td><span class="status-badge status-${barang.kondisi}">${getKondisiText(barang.kondisi)}</span></td>
+          <td>📍 ${barang.lokasi}</td>
+          <td>${barang.keterangan || '-'}</td>
+          <td><button class="delete-btn" onclick="deleteBarang(${barang.id})">🗑️ Hapus</button>
+          <button class="edit-btn" onclick="editBarang(${barang.id})">✏️ Edit</button></td>
+        `;
+      });
+    }
+
+    function getKondisiText(kondisi) {
+      const kondisiMap = {
+        'baik': 'Baik',
+        'rusak_ringan': 'Rusak Ringan',
+        'rusak_berat': 'Rusak Berat',
+        'hilang': 'Hilang'
+      };
+      return kondisiMap[kondisi] || kondisi;
+    }
+
+    async function addBarang() {
+      const token = localStorage.getItem('token');
+      
+      const kode_barang = document.getElementById('kode_barang').value.trim();
+      const nama_barang = document.getElementById('nama_barang').value.trim();
+      const kategori = document.getElementById('kategori').value.trim();
+      const jumlah = document.getElementById('jumlah').value;
+      const satuan = document.getElementById('satuan').value.trim();
+      const kondisi = document.getElementById('kondisi').value;
+      const lokasi = document.getElementById('lokasi').value.trim();
+      const keterangan = document.getElementById('keterangan').value.trim();
+
+      if (!kode_barang || !nama_barang || !kategori || !jumlah || !satuan || !kondisi || !lokasi) {
+        showNotification('Semua field wajib diisi!', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            kode_barang,
+            nama_barang,
+            kategori,
+            jumlah: parseInt(jumlah),
+            satuan,
+            kondisi,
+            lokasi,
+            keterangan,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showNotification('✅ Barang berhasil ditambahkan!', 'success');
+          clearForm();
+          getBarang();
+        } else {
+          showNotification(`❌ ${data.message}`, 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('Terjadi kesalahan saat menambah barang', 'error');
+      }
+    }
+
+    async function deleteBarang(id) {
+      if (!confirm('Apakah Anda yakin ingin menghapus barang ini?')) {
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+
+      try {
+        const response = await fetch(`http://localhost:5000/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showNotification('🗑️ Barang berhasil dihapus!', 'success');
+          getBarang();
+        } else {
+          showNotification(`❌ ${data.message}`, 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('Terjadi kesalahan saat menghapus barang', 'error');
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('kode_barang').value = '';
+      document.getElementById('nama_barang').value = '';
+      document.getElementById('kategori').value = '';
+      document.getElementById('jumlah').value = '';
+      document.getElementById('satuan').value = '';
+      document.getElementById('kondisi').value = '';
+      document.getElementById('lokasi').value = '';
+      document.getElementById('keterangan').value = '';
+    }
+
+    function logout() {
+      if (confirm('Apakah Anda yakin ingin logout?')) {
+        localStorage.removeItem('token');
+        showNotification('👋 Logout berhasil', 'success');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1000);
+      }
+    }
+
+    setInterval(getBarang, 30000);
+  </script>
+</body>
+</html>
