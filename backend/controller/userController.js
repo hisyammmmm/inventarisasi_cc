@@ -3,7 +3,7 @@ import jwt  from 'jsonwebtoken';
 import User from '../models/UserModel.js';
 import { Op } from 'sequelize';
 
-// Get all users
+// Get all user
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
