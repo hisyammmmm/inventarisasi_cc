@@ -12,7 +12,8 @@ const corsOptions = {
   origin: [
     'https://inventarisasi-fe-dot-b-05-450916.uc.r.appspot.com',
     'http://localhost:3000',
-    'http://localhost:8080'
+    'http://localhost:8080',
+    'http://localhost:5500'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
