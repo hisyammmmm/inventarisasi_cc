@@ -15,7 +15,7 @@ app.use((err, req, res, next) => {
 
 // Menggunakan CORS middleware
 app.use(cors({
-  origin: 'http://127.0.0.1:5500',  // Ganti dengan URL tempat frontend berjalan
+  origin: ['http://127.0.0.1:5500', 'https://inventarisasi-be-691768696804.us-central1.run.app'],  // Ganti dengan URL tempat frontend berjalan
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
