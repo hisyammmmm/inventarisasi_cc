@@ -4,12 +4,12 @@ instance_class: F1  # Kelas instance untuk App Engine (F1 adalah kelas standar y
 
 handlers:
   - url: /
-    static_files: barang.html
-    upload: barang.html
-    
-  - url: /
     static_files: login.html
     upload: login.html
+    
+  - url: /
+    static_files: barang.html
+    upload: barang.html
 
   - url: /
     static_files: register.html
