@@ -434,7 +434,7 @@ async function getBarang() {
   }
 
   try {
-    const response = await fetch('http://localhost:5000/', {
+    const response = await fetch('https://inventarisasi-be-691768696804.us-central1.run.app/', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -496,7 +496,7 @@ async function editBarang(id) {
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch(`http://localhost:5000/${id}`, {
+    const response = await fetch(`https://inventarisasi-be-691768696804.us-central1.run.app/${id}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -552,7 +552,7 @@ async function updateBarang(id) {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/${id}`, {
+    const response = await fetch(`https://inventarisasi-be-691768696804.us-central1.run.app/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -595,7 +595,7 @@ async function deleteBarang(id) {
   const token = localStorage.getItem('token');
 
   try {
-    const response = await fetch(`http://localhost:5000/${id}`, {
+    const response = await fetch(`https://inventarisasi-be-691768696804.us-central1.run.app/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -702,7 +702,7 @@ function showNotification(message, type = 'success') {
       }
 
       try {
-        const response = await fetch('http://localhost:5000/', {
+        const response = await fetch('https://inventarisasi-be-691768696804.us-central1.run.app/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -743,7 +743,7 @@ function showNotification(message, type = 'success') {
       const token = localStorage.getItem('token');
 
       try {
-        const response = await fetch(`http://localhost:5000/${id}`, {
+        const response = await fetch(`https://inventarisasi-be-691768696804.us-central1.run.app/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
