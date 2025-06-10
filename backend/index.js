@@ -18,6 +18,7 @@ app.use(cors({
   origin: ['http://127.0.0.1:5500', 'http://127.0.0.1:5501', 'https://inventarisasi-fe-dot-b-05-450916.uc.r.appspot.com'],  // Ganti dengan URL tempat frontend berjalan
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 app.use(express.json());
