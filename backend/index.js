@@ -15,7 +15,7 @@ app.use((err, req, res, next) => {
 
 // Menggunakan CORS middleware
 app.use(cors({
-  origin: ['http://127.0.0.1:5500', 'https://inventarisasi-fe-dot-b-05-450916.uc.r.appspot.com/'],  // Ganti dengan URL tempat frontend berjalan
+  origin: ['https://inventarisasi-fe-dot-b-05-450916.uc.r.appspot.com/'],  // Ganti dengan URL tempat frontend berjalan
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
